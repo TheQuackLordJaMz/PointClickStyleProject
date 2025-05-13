@@ -1,0 +1,59 @@
+using UnityEngine;
+
+public class Target : MonoBehaviour
+{
+    [SerializeField]private Rigidbody targetRb;
+
+    [SerializeField]private float minSpeed = 12;
+    [SerializeField] private float maxSpeed = 16;
+    [SerializeField] private float maxTorque = 10;
+     private float xRange = 4;
+     private float ySpawnPos = -0;
+
+
+    void Start()
+    {
+        targetRb = GetComponent<Rigidbody>();
+
+        //make the objects move upward randomly along the x axis
+        targetRb.AddForce(RandomForce(), ForceMode.Impulse);
+        //adding torque to random xyz values
+        targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
+        //setting a random x pos
+        transform.position = SpawnRandomPos();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    //Mouse Click input ,destroy the objects
+    private void OnMouseDown()
+    {
+        Destroy(gameObject); //destroy the game object we clicked on
+    }
+
+    Vector3  RandomForce() 
+    {
+        return Vector3.up* Random.Range(minSpeed, maxSpeed);
+    }
+
+    float RandomTorque() 
+    {
+        return Random.Range(-maxTorque, maxTorque);
+    }
+
+    Vector3 SpawnRandomPos() 
+    {
+        //return new vector3 because its a new vector3 .....i think
+        return new Vector3(Random.Range(-xRange, xRange), -ySpawnPos);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Destroy(gameObject);
+    }
+
+}
